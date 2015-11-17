@@ -1,0 +1,31 @@
+{
+  "type": "Object",
+  "required": [
+    "name",
+    "parent"
+  ],
+
+  "properties": {
+    "name": {
+      "type": "String",
+      "tags": [
+        "FolderName"
+      ]
+    },
+    "parent": {
+      "type": "Object",
+      "required": [
+        "id"
+      ],
+      "properties": {
+        "id": {
+          "type": "String",
+          "tags": [
+            "Parent",
+            "FolderIdentifier"
+          ]
+        }
+      }
+    }
+  }
+}
