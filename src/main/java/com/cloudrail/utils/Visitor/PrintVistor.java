@@ -55,15 +55,15 @@ public class PrintVistor implements Visitor {
         builder.append(tags+"\t\"properties\":{\n");
 
 
-        /*
+
         iterator = jsonObject.entrySet().iterator();
         while (iterator.hasNext()) {
             Entry<String, Object> temp = iterator.next();
             builder.append(tags+"\t\t\""+temp.getKey()+"\":");
             builder.append(travel(temp.getValue(),tagLevel+2)+",");
             builder.append("\n");
-        }*/
-        Iterator<Object> iterator2 = jsonObject.keySet().iterator();
+        }
+        /*Iterator<Object> iterator2 = jsonObject.keySet().iterator();
         while (iterator2.hasNext()) {
             Object temp = iterator2.next();
             builder.append(tags+"\t\t\""+temp+"\":");
@@ -71,7 +71,7 @@ public class PrintVistor implements Visitor {
             builder.append("\n");
 
             //System.out.println(jsonObject.get(temp).getClass());
-        }
+        }*/
 
 
         builder.deleteCharAt(builder.length()-2);
