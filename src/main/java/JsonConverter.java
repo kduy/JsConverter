@@ -12,11 +12,16 @@ import org.json.simple.parser.ParseException;
 public class JsonConverter {
     public static void main(String[] args) {
 
+        if (args.length < 2){
+            System.err.println("java -jar <jar path> <input> <output>");
+            System.exit(1);
+        }
+
         JSONParser parser = new JSONParser();
 
         try {
-            BufferedReader br = new BufferedReader(new FileReader("src/main/resources/input.txt"));
-            BufferedWriter bw = new BufferedWriter(new FileWriter("src/main/resources/output.txt"));
+            BufferedReader br = new BufferedReader(new FileReader(args[0]));
+            BufferedWriter bw = new BufferedWriter(new FileWriter(args[1]));
 
             String line ;
 
@@ -28,6 +33,7 @@ public class JsonConverter {
                         jsonBlock = new StringBuilder("");
                     }
 
+                    bw.newLine();
                     bw.write(line);
                     bw.newLine();
                 } else{

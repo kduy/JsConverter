@@ -1,4 +1,5 @@
-// sample1
+
+// func1
 {
 	"type": "Object",
 	"required": [
@@ -42,8 +43,8 @@
 		}
 	}
 }
-// sample2
-// sample2
+
+//func2
 {
 	"type": "Object",
 	"required": [

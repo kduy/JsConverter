@@ -1,4 +1,4 @@
-// sample1
+// func1
 {
   "name" : "FolderName",
   "parent" : {
@@ -9,10 +9,7 @@
 }
 
 
-
-
-// sample2
-// sample2
+//func2
 {
   "name" : "FolderName",
   "parent" : {
