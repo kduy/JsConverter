@@ -3,18 +3,14 @@ package main.java;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Iterator;
-import java.util.Map;
-
-import main.java.com.cloudrail.utils.Node.JsonArrayNode;
 import main.java.com.cloudrail.utils.Node.JsonObjectNode;
 import main.java.com.cloudrail.utils.Visitor.PrintVistor;
-import org.json.simple.JSONArray;
+
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-public class JsonSimpleExample {
+public class JsonConverter {
     public static void main(String[] args) {
 
         JSONParser parser = new JSONParser();

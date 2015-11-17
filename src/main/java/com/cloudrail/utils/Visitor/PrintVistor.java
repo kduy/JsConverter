@@ -1,6 +1,5 @@
 package main.java.com.cloudrail.utils.Visitor;
 
-import com.google.common.base.Strings;
 import main.java.com.cloudrail.utils.Node.JsonArrayNode;
 import main.java.com.cloudrail.utils.Node.JsonObjectNode;
 import main.java.com.cloudrail.utils.Node.PrimaryNode;
@@ -16,42 +15,41 @@ import java.util.Map.Entry;
 public class PrintVistor implements Visitor {
     @Override
     public String visit(JsonArrayNode jsonArrayNode, int tagLevel) {
-        String tags = Strings.repeat("\t",tagLevel);
+        String tags = repeat("\t",tagLevel);
         JSONArray jsonArray = jsonArrayNode.getJsonArray();
-        StringBuilder builder = new StringBuilder("");
 
+        StringBuilder builder = new StringBuilder("");
         builder.append(tags+"{\n");
-        builder.append(tags+"\t\"type\": \"Array\"\n");
-        builder.append(tags+"\t\"item\": [\n");
+        builder.append(tags+"\t\"type\": \"Array\",\n");
+        builder.append(tags+"\t\"items\": [ \n");
         for (Object element : jsonArray) {
-            //builder.append(tags+"\t\t");
             builder.append(travel(element,tagLevel+2)+",");
-            //builder.append(tags+",");
             builder.append("\n");
         }
         builder.deleteCharAt(builder.length()-2);
         builder.append(tags+"\t]\n");
         builder.append(tags+"}");
+
         return  builder.toString();
     }
 
     @Override
     public String visit(JsonObjectNode jsonObjectNode, int tagLevel) {
-        String tags = Strings.repeat("\t",tagLevel);
+        String tags = repeat("\t",tagLevel);
         JSONObject jsonObject = jsonObjectNode.getJsonObject();
         StringBuilder builder = new StringBuilder("");
 
         Iterator<Entry<String, Object>> iterator = jsonObject.entrySet().iterator();
         builder.append("{\n");
         // type
-        builder.append(tags+"\t\"type\": \"Object\"\n");
+        builder.append(tags+"\t\"type\": \"Object\",\n");
         // required
         builder.append(tags+"\t\"required\": [\n");
         while (iterator.hasNext()){
             builder.append(tags+"\t\t\""+iterator.next().getKey()+"\",\n");
         }
         builder.deleteCharAt(builder.length()-2);
-        builder.append(tags+"\t]\n");
+        builder.append(tags+"\t],\n");
 
         // properties
         builder.append(tags+"\t\"properties\":{\n");
@@ -84,16 +82,20 @@ public class PrintVistor implements Visitor {
 
     @Override
     public String visit(PrimaryNode primaryNode, int tagLevel) {
-        String tags = Strings.repeat("\t",tagLevel);
+        String tags = repeat("\t",tagLevel);
         String value = primaryNode.getValue();
 
         StringBuilder builder = new StringBuilder("");
         builder.append(tags+"{\n");
-        builder.append(tags+"\t\"type\": \"String\"\n");
+        builder.append(tags+"\t\"type\": \"String\",\n");
         builder.append(tags+"\t\"tags\": [\n");
-        builder.append(tags+"\t\t\""+value+"\"\n");
+        builder.append(tags+"\t\t\"<"+value+">\"\n");
         builder.append(tags+"\t]\n");
         builder.append(tags+"}");
         return  builder.toString();
+    }
+
+    private static String repeat(String str, int times) {
+        return new String(new char[times]).replace("\0", str);
     }
 }
