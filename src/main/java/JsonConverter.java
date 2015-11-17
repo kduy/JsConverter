@@ -15,17 +15,28 @@ public class JsonConverter {
         JSONParser parser = new JSONParser();
 
         try {
-            // read json input
-            Object obj = parser.parse(new FileReader("src/main/resources/test.json"));
+            BufferedReader br = new BufferedReader(new FileReader("src/main/resources/input.txt"));
+            BufferedWriter bw = new BufferedWriter(new FileWriter("src/main/resources/output.txt"));
 
-            // convert
-            JSONObject jsonObject = (JSONObject) obj;
-            PrintVistor vistor = new PrintVistor();
-            String convertedJson = (new JsonObjectNode(jsonObject)).accept(vistor,0);
+            String line ;
 
-            // write output
-            BufferedWriter bw = new BufferedWriter(new FileWriter("output.json"));
-            bw.write(convertedJson);
+            StringBuilder jsonBlock = new StringBuilder("");
+            while ((line = br.readLine())!= null){
+                if (line.startsWith("//")){
+                    System.out.println(!jsonBlock.toString().equals(""));
+                    if (!jsonBlock.toString().equals("")){
+                        convertThenWriteJson(parser, bw, jsonBlock);
+                        jsonBlock = new StringBuilder("");
+                    }
+
+                    bw.write(line);
+                    bw.newLine();
+                } else{
+                    jsonBlock.append(line.trim());
+                }
+            }
+            convertThenWriteJson(parser, bw, jsonBlock);
+            br.close();
             bw.close();
 
         } catch (FileNotFoundException e) {
@@ -36,4 +47,16 @@ public class JsonConverter {
             e.printStackTrace();
         }
     }
+
+    private static void convertThenWriteJson(JSONParser parser, BufferedWriter bw, StringBuilder jsonBlock) throws ParseException, IOException {
+        JSONObject jsonObject;
+        PrintVistor visitor;
+        String convertedJson;
+        jsonObject = (JSONObject)parser.parse(jsonBlock.toString());
+        visitor = new PrintVistor();
+        convertedJson = (new JsonObjectNode(jsonObject)).accept(visitor,0);
+        bw.write(convertedJson);
+        bw.newLine();
+    }
+
 }
