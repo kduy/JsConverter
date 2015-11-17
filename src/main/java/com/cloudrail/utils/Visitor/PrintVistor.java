@@ -7,47 +7,68 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.util.Iterator;
-import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * Created by kidio on 17/11/15.
  */
 public class PrintVistor implements Visitor {
     @Override
-    public void visit(JsonArrayNode jsonArrayNode) {
-        System.out.println("this is pritnvisitor for arraynode");
+    public String visit(JsonArrayNode jsonArrayNode) {
         JSONArray jsonArray = jsonArrayNode.getJsonArray();
+        StringBuilder builder = new StringBuilder("");
+
+        builder.append("{\n");
+        builder.append("\t\"type\": \"Array\"\n");
+        builder.append("\t\"item\": [\n");
         for (Object element : jsonArray) {
-            if (element instanceof JSONArray){
-                (new JsonArrayNode((JSONArray) element)).accept(this);
-            }else if (element instanceof  JSONObject){
-                (new JsonObjectNode((JSONObject)element)).accept(this);
-            }else {
-                (new PrimaryNode(element.toString())).accept(this);
-            }
+            builder.append("\t\t");
+            builder.append(travel(element));
+            builder.append(",");
+            builder.append("\n");
         }
+        builder.append("\t]\n");
+        builder.append("}\n");
+        return  builder.toString();
     }
 
     @Override
-    public void visit(JsonObjectNode jsonObjectNode) {
+    public String visit(JsonObjectNode jsonObjectNode) {
         JSONObject jsonObject = jsonObjectNode.getJsonObject();
-        Iterator<Map.Entry<String, Object>> iterator = jsonObject.entrySet().iterator();
-        while (iterator.hasNext()) {
-            Object temp = iterator.next().getValue();
-            if (temp instanceof JSONArray){
-                (new JsonArrayNode((JSONArray) temp)).accept(this);
-            }else if (temp instanceof  JSONObject){
-                (new JsonObjectNode((JSONObject)temp)).accept(this);
-            }else {
-                (new PrimaryNode(temp.toString())).accept(this);
-            }
-        }
+        StringBuilder builder = new StringBuilder("");
 
+        Iterator<Entry<String, Object>> iterator = jsonObject.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Entry<String, Object> temp = iterator.next();
+            builder.append(temp.getKey()+":");
+            builder.append(travel(temp.getValue()));
+            builder.append("\n");
+        }
+        return  builder.toString();
 
     }
 
+    private String travel(Object temp) {
+        if (temp instanceof JSONArray){
+            return (new JsonArrayNode((JSONArray) temp)).accept(this);
+        }else if (temp instanceof JSONObject){
+            return (new JsonObjectNode((JSONObject)temp)).accept(this);
+        }else {
+            return (new PrimaryNode(temp.toString())).accept(this);
+        }
+    }
+
     @Override
-    public void visit(PrimaryNode primaryNode) {
-        System.out.println(primaryNode.getValue());
+    public String visit(PrimaryNode primaryNode) {
+        String value = primaryNode.getValue();
+
+        StringBuilder builder = new StringBuilder("");
+        builder.append("{\n");
+        builder.append("\t\"type\": \"String\"\n");
+        builder.append("\t\"tags\": [\n");
+        builder.append("\t\t"+value+"\n");
+        builder.append("\t]\n");
+        builder.append("}\n");
+        return  builder.toString();
     }
 }

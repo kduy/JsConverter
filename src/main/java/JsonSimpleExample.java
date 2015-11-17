@@ -48,7 +48,7 @@ public class JsonSimpleExample {
                     (new JsonArrayNode((JSONArray) temp)).accept(vistor);
                 }
             }*/
-            (new JsonObjectNode(jsonObject)).accept(vistor);
+            System.out.println((new JsonObjectNode(jsonObject)).accept(vistor));
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
