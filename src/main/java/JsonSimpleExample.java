@@ -21,7 +21,7 @@ public class JsonSimpleExample {
 
         try {
 
-            Object obj = parser.parse(new FileReader("/Users/kidio/IdeaProjects/JsonConverter/src/main/resources/sample_input.json"));
+            Object obj = parser.parse(new FileReader("/Users/kidio/IdeaProjects/JsonConverter/src/main/resources/test.json"));
 
             JSONObject jsonObject = (JSONObject) obj;
 /*
@@ -48,7 +48,7 @@ public class JsonSimpleExample {
                     (new JsonArrayNode((JSONArray) temp)).accept(vistor);
                 }
             }*/
-            System.out.println((new JsonObjectNode(jsonObject)).accept(vistor));
+            System.out.println((new JsonObjectNode(jsonObject)).accept(vistor,0));
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();

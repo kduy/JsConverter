@@ -1,5 +1,6 @@
 package main.java.com.cloudrail.utils.Visitor;
 
+import com.google.common.base.Strings;
 import main.java.com.cloudrail.utils.Node.JsonArrayNode;
 import main.java.com.cloudrail.utils.Node.JsonObjectNode;
 import main.java.com.cloudrail.utils.Node.PrimaryNode;
@@ -14,79 +15,82 @@ import java.util.Map.Entry;
  */
 public class PrintVistor implements Visitor {
     @Override
-    public String visit(JsonArrayNode jsonArrayNode) {
+    public String visit(JsonArrayNode jsonArrayNode, int tagLevel) {
+        String tags = Strings.repeat("\t",tagLevel);
         JSONArray jsonArray = jsonArrayNode.getJsonArray();
         StringBuilder builder = new StringBuilder("");
 
-        builder.append("{\n");
-        builder.append("\t\"type\": \"Array\"\n");
-        builder.append("\t\"item\": [\n");
+        builder.append(tags+"{\n");
+        builder.append(tags+"\t\"type\": \"Array\"\n");
+        builder.append(tags+"\t\"item\": [\n");
         for (Object element : jsonArray) {
-            builder.append("\t\t");
-            builder.append(travel(element));
+            //builder.append(tags+"\t\t");
+            builder.append(travel(element,tagLevel+2));
             builder.append(",");
             builder.append("\n");
         }
-        builder.append("\t]\n");
+        builder.append(tags+"\t]\n");
         builder.append("}\n");
         return  builder.toString();
     }
 
     @Override
-    public String visit(JsonObjectNode jsonObjectNode) {
+    public String visit(JsonObjectNode jsonObjectNode, int tagLevel) {
+        String tags = Strings.repeat("\t",tagLevel);
         JSONObject jsonObject = jsonObjectNode.getJsonObject();
         StringBuilder builder = new StringBuilder("");
 
         Iterator<Entry<String, Object>> iterator = jsonObject.entrySet().iterator();
         builder.append("{\n");
         // type
-        builder.append("\t\"type\": \"Object\"\n");
+        builder.append(tags+"\t\"type\": \"Object\"\n");
         // required
-        builder.append("\t\"required\": [\n");
+        builder.append(tags+"\t\"required\": [\n");
         while (iterator.hasNext()){
-            builder.append("\t\t"+iterator.next().getKey()+",\n");
+            builder.append(tags+"\t\t"+iterator.next().getKey()+",\n");
         }
-        builder.append("\t]\n");
+        builder.append(tags+"\t]\n");
 
         // properties
-        builder.append("\t\"properties\":{\n");
+        builder.append(tags+"\t\"properties\":{\n");
         iterator = jsonObject.entrySet().iterator();
         while (iterator.hasNext()) {
             Entry<String, Object> temp = iterator.next();
-            builder.append("\t\t"+temp.getKey()+":");
-            builder.append(""+ travel(temp.getValue()));
+            builder.append(tags+"\t\t"+temp.getKey()+":");
+            builder.append(tags+"\t\t"+ travel(temp.getValue(),tagLevel+2));
             builder.append("\n");
         }
-        builder.append("\t}\n");
+        builder.append(tags+"\t}\n");
 
-        builder.append("}\n");
+        builder.append(tags+"},\n");
 
 
         return  builder.toString();
 
     }
 
-    private String travel(Object temp) {
+    private String travel(Object temp, int tagLevel) {
         if (temp instanceof JSONArray){
-            return (new JsonArrayNode((JSONArray) temp)).accept(this);
+            return (new JsonArrayNode((JSONArray) temp)).accept(this, tagLevel);
         }else if (temp instanceof JSONObject){
-            return (new JsonObjectNode((JSONObject)temp)).accept(this);
+            return (new JsonObjectNode((JSONObject)temp)).accept(this,tagLevel);
         }else {
-            return (new PrimaryNode(temp.toString())).accept(this);
+            return (new PrimaryNode(temp.toString())).accept(this,tagLevel);
         }
     }
 
     @Override
-    public String visit(PrimaryNode primaryNode) {
+    public String visit(PrimaryNode primaryNode, int tagLevel) {
+        String tags = Strings.repeat("\t",tagLevel);
         String value = primaryNode.getValue();
 
         StringBuilder builder = new StringBuilder("");
-        builder.append("{\n");
-        builder.append("\t\"type\": \"String\"\n");
-        builder.append("\t\"tags\": [\n");
-        builder.append("\t\t"+value+"\n");
-        builder.append("\t]\n");
-        builder.append("}\n");
+        builder.append(tags+"{\n");
+        builder.append(tags+"\t\"type\": \"String\"\n");
+        builder.append(tags+"\t\"tags\": [\n");
+        builder.append(tags+"\t\t\""+value+"\"\n");
+        builder.append(tags+"\t]\n");
+        builder.append(tags+"}\n");
         return  builder.toString();
     }
 }
