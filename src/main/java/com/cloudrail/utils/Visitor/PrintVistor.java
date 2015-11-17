@@ -25,12 +25,13 @@ public class PrintVistor implements Visitor {
         builder.append(tags+"\t\"item\": [\n");
         for (Object element : jsonArray) {
             //builder.append(tags+"\t\t");
-            builder.append(travel(element,tagLevel+2));
-            builder.append(",");
+            builder.append(travel(element,tagLevel+2)+",");
+            //builder.append(tags+",");
             builder.append("\n");
         }
+        builder.deleteCharAt(builder.length()-2);
         builder.append(tags+"\t]\n");
-        builder.append("}\n");
+        builder.append(tags+"}");
         return  builder.toString();
     }
 
@@ -47,8 +48,9 @@ public class PrintVistor implements Visitor {
         // required
         builder.append(tags+"\t\"required\": [\n");
         while (iterator.hasNext()){
-            builder.append(tags+"\t\t"+iterator.next().getKey()+",\n");
+            builder.append(tags+"\t\t\""+iterator.next().getKey()+"\",\n");
         }
+        builder.deleteCharAt(builder.length()-2);
         builder.append(tags+"\t]\n");
 
         // properties
@@ -56,13 +58,14 @@ public class PrintVistor implements Visitor {
         iterator = jsonObject.entrySet().iterator();
         while (iterator.hasNext()) {
             Entry<String, Object> temp = iterator.next();
-            builder.append(tags+"\t\t"+temp.getKey()+":");
-            builder.append(tags+"\t\t"+ travel(temp.getValue(),tagLevel+2));
+            builder.append(tags+"\t\t\""+temp.getKey()+"\":");
+            builder.append(travel(temp.getValue(),tagLevel+2)+",");
             builder.append("\n");
         }
+        builder.deleteCharAt(builder.length()-2);
         builder.append(tags+"\t}\n");
 
-        builder.append(tags+"},\n");
+        builder.append(tags+"}");
 
 
         return  builder.toString();
@@ -90,7 +93,7 @@ public class PrintVistor implements Visitor {
         builder.append(tags+"\t\"tags\": [\n");
         builder.append(tags+"\t\t\""+value+"\"\n");
         builder.append(tags+"\t]\n");
-        builder.append(tags+"}\n");
+        builder.append(tags+"}");
         return  builder.toString();
     }
 }

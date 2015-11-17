@@ -21,33 +21,11 @@ public class JsonSimpleExample {
 
         try {
 
-            Object obj = parser.parse(new FileReader("/Users/kidio/IdeaProjects/JsonConverter/src/main/resources/test.json"));
+            Object obj = parser.parse(new FileReader("src/main/resources/test.json"));
 
             JSONObject jsonObject = (JSONObject) obj;
-/*
 
-            String name = (String) jsonObject.get("name");
-            System.out.println(name);
-
-            long age = (Long) jsonObject.get("age");
-            System.out.println(age);
-
-            // loop array
-            JSONArray msg = (JSONArray) jsonObject.get("messages");
-            Iterator<String> iterator = msg.iterator();
-            while (iterator.hasNext()) {
-                System.out.println(iterator.next());
-            }
-*/
             PrintVistor vistor = new PrintVistor();
-            /*Iterator<Map.Entry<String, Object>> iterator = jsonObject.entrySet().iterator();
-            while (iterator.hasNext()) {
-                //System.out.println(iterator.next().getValue() instanceof JSONArray); // instanceof JSONArray
-                Object temp = iterator.next().getValue();
-                if (temp instanceof JSONArray){
-                    (new JsonArrayNode((JSONArray) temp)).accept(vistor);
-                }
-            }*/
             System.out.println((new JsonObjectNode(jsonObject)).accept(vistor,0));
 
         } catch (FileNotFoundException e) {
@@ -57,7 +35,5 @@ public class JsonSimpleExample {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
     }
-
 }
