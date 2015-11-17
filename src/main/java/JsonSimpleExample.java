@@ -21,7 +21,7 @@ public class JsonSimpleExample {
 
         try {
 
-            Object obj = parser.parse(new FileReader("/Users/kidio/IdeaProjects/JsonConverter/src/main/resources/test.json"));
+            Object obj = parser.parse(new FileReader("/Users/kidio/IdeaProjects/JsonConverter/src/main/resources/sample_input.json"));
 
             JSONObject jsonObject = (JSONObject) obj;
 /*

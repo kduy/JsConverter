@@ -38,12 +38,30 @@ public class PrintVistor implements Visitor {
         StringBuilder builder = new StringBuilder("");
 
         Iterator<Entry<String, Object>> iterator = jsonObject.entrySet().iterator();
+        builder.append("{\n");
+        // type
+        builder.append("\t\"type\": \"Object\"\n");
+        // required
+        builder.append("\t\"required\": [\n");
+        while (iterator.hasNext()){
+            builder.append("\t\t"+iterator.next().getKey()+",\n");
+        }
+        builder.append("\t]\n");
+
+        // properties
+        builder.append("\t\"properties\":{\n");
+        iterator = jsonObject.entrySet().iterator();
         while (iterator.hasNext()) {
             Entry<String, Object> temp = iterator.next();
-            builder.append(temp.getKey()+":");
-            builder.append(travel(temp.getValue()));
+            builder.append("\t\t"+temp.getKey()+":");
+            builder.append(""+ travel(temp.getValue()));
             builder.append("\n");
         }
+        builder.append("\t}\n");
+
+        builder.append("}\n");
+
+
         return  builder.toString();
 
     }
