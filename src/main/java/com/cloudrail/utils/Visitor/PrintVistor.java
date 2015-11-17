@@ -1,8 +1,6 @@
 package main.java.com.cloudrail.utils.Visitor;
 
-import main.java.com.cloudrail.utils.Node.JsonArrayNode;
-import main.java.com.cloudrail.utils.Node.JsonObjectNode;
-import main.java.com.cloudrail.utils.Node.PrimaryNode;
+import main.java.com.cloudrail.utils.Node.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -55,13 +53,27 @@ public class PrintVistor implements Visitor {
 
         // properties
         builder.append(tags+"\t\"properties\":{\n");
+
+
+        /*
         iterator = jsonObject.entrySet().iterator();
         while (iterator.hasNext()) {
             Entry<String, Object> temp = iterator.next();
             builder.append(tags+"\t\t\""+temp.getKey()+"\":");
             builder.append(travel(temp.getValue(),tagLevel+2)+",");
             builder.append("\n");
+        }*/
+        Iterator<Object> iterator2 = jsonObject.keySet().iterator();
+        while (iterator2.hasNext()) {
+            Object temp = iterator2.next();
+            builder.append(tags+"\t\t\""+temp+"\":");
+            builder.append(travel(jsonObject.get(temp),tagLevel+2)+",");
+            builder.append("\n");
+            //if ((jsonObject.get(temp) instanceof java.lang.Integer))
+                System.out.println(jsonObject.get(temp).getClass());
         }
+
+
         builder.deleteCharAt(builder.length()-2);
         builder.append(tags+"\t}\n");
 
@@ -77,18 +89,33 @@ public class PrintVistor implements Visitor {
         }else if (temp instanceof JSONObject){
             return (new JsonObjectNode((JSONObject)temp)).accept(this,tagLevel);
         }else {
-            return (new PrimaryNode(temp.toString())).accept(this,tagLevel);
+            //return (new PrimaryNode(temp.toString())).accept(this,tagLevel);
+            if (temp instanceof  java.lang.Long){
+                return (new LongNode(((Long) temp).intValue())).accept(this,tagLevel);
+            } else{
+
+                return (new StringNode(temp.toString())).accept(this,tagLevel);
+            }
         }
     }
 
     @Override
     public String visit(PrimaryNode primaryNode, int tagLevel) {
         String tags = repeat("\t",tagLevel);
-        String value = primaryNode.getValue();
+        String value="";
+        String type ="String";
+
+        if (primaryNode instanceof LongNode){
+            value = ""+((LongNode) primaryNode).getValue();
+            type = "int";
+        }else {
+            value = ((StringNode)primaryNode).getValue();
+            type="String";
+        }
 
         StringBuilder builder = new StringBuilder("");
         builder.append(tags+"{\n");
-        builder.append(tags+"\t\"type\": \"String\",\n");
+        builder.append(tags+"\t\"type\": \""+type+"\",\n");
         builder.append(tags+"\t\"tags\": [\n");
         builder.append(tags+"\t\t\"<"+value+">\"\n");
         builder.append(tags+"\t]\n");

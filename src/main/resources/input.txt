@@ -2,7 +2,7 @@
 {
   "name" : "FolderName",
   "parent" : {
-    "id" : "0"
+    "id" : 10000
   }
 }
 
@@ -14,6 +14,6 @@
 {
   "name" : "FolderName",
   "parent" : {
-    "id" : "0"
+    "id" : true
   }
 }
