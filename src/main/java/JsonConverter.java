@@ -1,8 +1,7 @@
 package main.java;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+
 import main.java.com.cloudrail.utils.Node.JsonObjectNode;
 import main.java.com.cloudrail.utils.Visitor.PrintVistor;
 
@@ -16,13 +15,18 @@ public class JsonConverter {
         JSONParser parser = new JSONParser();
 
         try {
-
+            // read json input
             Object obj = parser.parse(new FileReader("src/main/resources/test.json"));
 
+            // convert
             JSONObject jsonObject = (JSONObject) obj;
-
             PrintVistor vistor = new PrintVistor();
-            System.out.println((new JsonObjectNode(jsonObject)).accept(vistor,0));
+            String convertedJson = (new JsonObjectNode(jsonObject)).accept(vistor,0);
+
+            // write output
+            BufferedWriter bw = new BufferedWriter(new FileWriter("output.json"));
+            bw.write(convertedJson);
+            bw.close();
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();

@@ -41,8 +41,10 @@ public class PrintVistor implements Visitor {
 
         Iterator<Entry<String, Object>> iterator = jsonObject.entrySet().iterator();
         builder.append("{\n");
+
         // type
         builder.append(tags+"\t\"type\": \"Object\",\n");
+
         // required
         builder.append(tags+"\t\"required\": [\n");
         while (iterator.hasNext()){
@@ -64,7 +66,6 @@ public class PrintVistor implements Visitor {
         builder.append(tags+"\t}\n");
 
         builder.append(tags+"}");
-
 
         return  builder.toString();
 
@@ -92,6 +93,7 @@ public class PrintVistor implements Visitor {
         builder.append(tags+"\t\t\"<"+value+">\"\n");
         builder.append(tags+"\t]\n");
         builder.append(tags+"}");
+
         return  builder.toString();
     }
 
