@@ -23,7 +23,6 @@ public class JsonConverter {
             StringBuilder jsonBlock = new StringBuilder("");
             while ((line = br.readLine())!= null){
                 if (line.startsWith("//")){
-                    System.out.println(!jsonBlock.toString().equals(""));
                     if (!jsonBlock.toString().equals("")){
                         convertThenWriteJson(parser, bw, jsonBlock);
                         jsonBlock = new StringBuilder("");
