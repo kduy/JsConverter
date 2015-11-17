@@ -1,0 +1,75 @@
+// sample1
+{
+	"type": "Object",
+	"required": [
+		"parent",
+		"name"
+	],
+	"properties":{
+		"parent":{
+			"type": "Object",
+			"required": [
+				"id2",
+				"id3",
+				"id"
+			],
+			"properties":{
+				"id2":				{
+					"type": "String",
+					"tags": [
+						"<1.222>"
+					]
+				},
+				"id3":				{
+					"type": "String",
+					"tags": [
+						"<12.0>"
+					]
+				},
+				"id":				{
+					"type": "int",
+					"tags": [
+						"<10000>"
+					]
+				}
+			}
+		},
+		"name":		{
+			"type": "String",
+			"tags": [
+				"<FolderName>"
+			]
+		}
+	}
+}
+// sample2
+// sample2
+{
+	"type": "Object",
+	"required": [
+		"parent",
+		"name"
+	],
+	"properties":{
+		"parent":{
+			"type": "Object",
+			"required": [
+				"id"
+			],
+			"properties":{
+				"id":				{
+					"type": "String",
+					"tags": [
+						"<true>"
+					]
+				}
+			}
+		},
+		"name":		{
+			"type": "String",
+			"tags": [
+				"<FolderName>"
+			]
+		}
+	}
+}

@@ -69,8 +69,8 @@ public class PrintVistor implements Visitor {
             builder.append(tags+"\t\t\""+temp+"\":");
             builder.append(travel(jsonObject.get(temp),tagLevel+2)+",");
             builder.append("\n");
-            //if ((jsonObject.get(temp) instanceof java.lang.Integer))
-                System.out.println(jsonObject.get(temp).getClass());
+
+            //System.out.println(jsonObject.get(temp).getClass());
         }
 
 
@@ -92,8 +92,11 @@ public class PrintVistor implements Visitor {
             //return (new PrimaryNode(temp.toString())).accept(this,tagLevel);
             if (temp instanceof  java.lang.Long){
                 return (new LongNode(((Long) temp).intValue())).accept(this,tagLevel);
-            } else{
-
+            } else if (temp instanceof  java.lang.Double){
+                return (new DoubleNode(((Double) temp).doubleValue())).accept(this,tagLevel);
+            } else if (temp instanceof  java.lang.Boolean){
+                return (new BooleanNode(((Boolean) temp).booleanValue())).accept(this,tagLevel);
+            } else {
                 return (new StringNode(temp.toString())).accept(this,tagLevel);
             }
         }
@@ -108,6 +111,12 @@ public class PrintVistor implements Visitor {
         if (primaryNode instanceof LongNode){
             value = ""+((LongNode) primaryNode).getValue();
             type = "int";
+        }else if (primaryNode instanceof DoubleNode){
+            value = ""+((DoubleNode) primaryNode).getValue();
+            type = "number";
+        }else if (primaryNode instanceof BooleanNode){
+            value = ""+((BooleanNode) primaryNode).getValue();
+            type = "boolean";
         }else {
             value = ((StringNode)primaryNode).getValue();
             type="String";
