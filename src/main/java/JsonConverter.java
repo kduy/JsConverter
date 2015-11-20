@@ -32,7 +32,6 @@ public class JsonConverter {
                         convertThenWriteJson(parser, bw, jsonBlock);
                         jsonBlock = new StringBuilder("");
                     }
-
                     bw.newLine();
                     bw.write(line);
                     bw.newLine();
@@ -40,8 +39,9 @@ public class JsonConverter {
                     jsonBlock.append(line.trim());
                 }
             }
-            System.out.println(jsonBlock.toString());
-            //convertThenWriteJson(parser, bw, jsonBlock);
+
+            if (!jsonBlock.toString().equals(""))
+                convertThenWriteJson(parser, bw, jsonBlock);
             br.close();
             bw.close();
 

@@ -38,7 +38,7 @@ public class PrintVistor implements Visitor {
         StringBuilder builder = new StringBuilder("");
 
         Iterator<Entry<String, Object>> iterator = jsonObject.entrySet().iterator();
-        builder.append("{\n");
+        builder.append(tags+"{\n");
 
         // type
         builder.append(tags+"\t\"type\": \"Object\",\n");
