@@ -61,8 +61,13 @@ public class JsonConverter {
         jsonObject = (JSONObject)parser.parse(jsonBlock.toString());
         visitor = new PrintVistor();
         convertedJson = (new JsonObjectNode(jsonObject)).accept(visitor,0);
-        bw.write(convertedJson);
+
+        bw.write(formatJson(convertedJson));
         bw.newLine();
+    }
+
+    private static String formatJson(String convertedJson) {
+        return convertedJson.replaceAll(":(\t)+", ":");
     }
 
 }
