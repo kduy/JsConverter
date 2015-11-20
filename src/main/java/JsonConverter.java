@@ -27,7 +27,7 @@ public class JsonConverter {
 
             StringBuilder jsonBlock = new StringBuilder("");
             while ((line = br.readLine())!= null){
-                if (line.startsWith("//")){
+                if (line.startsWith("//")|| line.startsWith("#")|| line.startsWith("```")){
                     if (!jsonBlock.toString().equals("")){
                         convertThenWriteJson(parser, bw, jsonBlock);
                         jsonBlock = new StringBuilder("");
@@ -40,7 +40,8 @@ public class JsonConverter {
                     jsonBlock.append(line.trim());
                 }
             }
-            convertThenWriteJson(parser, bw, jsonBlock);
+            System.out.println(jsonBlock.toString());
+            //convertThenWriteJson(parser, bw, jsonBlock);
             br.close();
             bw.close();
 
