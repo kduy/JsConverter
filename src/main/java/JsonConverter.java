@@ -2,9 +2,11 @@ package main.java;
 
 import java.io.*;
 
+import main.java.com.cloudrail.utils.Node.JsonArrayNode;
 import main.java.com.cloudrail.utils.Node.JsonObjectNode;
 import main.java.com.cloudrail.utils.Visitor.PrintVistor;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -55,12 +57,15 @@ public class JsonConverter {
     }
 
     private static void convertThenWriteJson(JSONParser parser, BufferedWriter bw, StringBuilder jsonBlock) throws ParseException, IOException {
-        JSONObject jsonObject;
+        Object parsedJson;
         PrintVistor visitor;
-        String convertedJson;
-        jsonObject = (JSONObject)parser.parse(jsonBlock.toString());
+        String convertedJson = "";
+        parsedJson = parser.parse(jsonBlock.toString());
         visitor = new PrintVistor();
-        convertedJson = (new JsonObjectNode(jsonObject)).accept(visitor,0);
+        if (parsedJson instanceof  JSONObject)
+            convertedJson = (new JsonObjectNode((JSONObject)parsedJson)).accept(visitor,0);
+        else if (parsedJson instanceof JSONArray)
+            convertedJson = (new JsonArrayNode((JSONArray)parsedJson)).accept(visitor,0);
 
         bw.write(formatJson(convertedJson));
         bw.newLine();
