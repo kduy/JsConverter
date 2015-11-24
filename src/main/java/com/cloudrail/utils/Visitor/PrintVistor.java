@@ -126,7 +126,7 @@ public class PrintVistor implements Visitor {
         builder.append(tags+"{\n");
         builder.append(tags+"\t\"type\": \""+type+"\",\n");
         builder.append(tags+"\t\"tags\": [\n");
-        builder.append(tags+"\t\t\"<"+value+">\"\n");
+        builder.append(tags+"\t\t\"{"+value+"}\"\n");
         builder.append(tags+"\t]\n");
         builder.append(tags+"}");
 
