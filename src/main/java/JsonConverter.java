@@ -63,9 +63,9 @@ public class JsonConverter {
         parsedJson = parser.parse(jsonBlock.toString());
         visitor = new PrintVistor();
         if (parsedJson instanceof  JSONObject)
-            convertedJson = (new JsonObjectNode((JSONObject)parsedJson)).accept(visitor,0);
+            convertedJson = (new JsonObjectNode((JSONObject)parsedJson)).accept(visitor,0,"");
         else if (parsedJson instanceof JSONArray)
-            convertedJson = (new JsonArrayNode((JSONArray)parsedJson)).accept(visitor,0);
+            convertedJson = (new JsonArrayNode((JSONArray)parsedJson)).accept(visitor,0,"");
 
         bw.write(formatJson(convertedJson));
         bw.newLine();

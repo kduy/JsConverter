@@ -24,7 +24,7 @@ public class JsonObjectNode implements Visitable  {
     }
 
     @Override
-    public String accept(Visitor visitor, int tagLevel) {
-        return visitor.visit(this, tagLevel);
+    public String accept(Visitor visitor, int tagLevel, String parent) {
+        return visitor.visit(this, tagLevel, parent);
     }
 }

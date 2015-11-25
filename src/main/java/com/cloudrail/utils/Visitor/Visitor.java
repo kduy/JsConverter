@@ -9,7 +9,7 @@ import main.java.com.cloudrail.utils.Node.PrimaryNode;
  */
 public interface
 Visitor {
-    public String visit(JsonArrayNode jsonArrayNode, int tagLevel);
-    public String visit (JsonObjectNode jsonObjectNode, int tagLevel);
-    public String visit (PrimaryNode primaryNode, int tagLevel);
+    public String visit(JsonArrayNode jsonArrayNode, int tagLevel, String parent);
+    public String visit (JsonObjectNode jsonObjectNode, int tagLevel, String parent);
+    public String visit (PrimaryNode primaryNode, int tagLevel, String parent);
 }

@@ -12,7 +12,7 @@ import java.util.Map.Entry;
  */
 public class PrintVistor implements Visitor {
     @Override
-    public String visit(JsonArrayNode jsonArrayNode, int tagLevel) {
+    public String visit(JsonArrayNode jsonArrayNode, int tagLevel, String parent) {
         String tags = repeat("\t",tagLevel);
         JSONArray jsonArray = jsonArrayNode.getJsonArray();
 
@@ -23,7 +23,7 @@ public class PrintVistor implements Visitor {
         builder.append(tags+"\t\"items\":");
         for (Object element : jsonArray) {
             //builder.append(travel(element,tagLevel+2)+",");
-            builder.append(travel(element,tagLevel+1));
+            builder.append(travel(element,tagLevel+1,""));
             builder.append("\n");
             break;
         }
@@ -35,7 +35,7 @@ public class PrintVistor implements Visitor {
     }
 
     @Override
-    public String visit(JsonObjectNode jsonObjectNode, int tagLevel) {
+    public String visit(JsonObjectNode jsonObjectNode, int tagLevel, String parent) {
         String tags = repeat("\t",tagLevel);
         JSONObject jsonObject = jsonObjectNode.getJsonObject();
         StringBuilder builder = new StringBuilder("");
@@ -63,7 +63,7 @@ public class PrintVistor implements Visitor {
         while (iterator.hasNext()) {
             Entry<String, Object> temp = iterator.next();
             builder.append(tags+"\t\t\""+temp.getKey()+"\":");
-            builder.append(travel(temp.getValue(),tagLevel+2)+",");
+            builder.append(travel(temp.getValue(),tagLevel+2,temp.getKey() )+",");
             builder.append("\n");
         }
         /*Iterator<Object> iterator2 = jsonObject.keySet().iterator();
@@ -86,27 +86,27 @@ public class PrintVistor implements Visitor {
 
     }
 
-    private String travel(Object temp, int tagLevel) {
+    private String travel(Object temp, int tagLevel, String parent) {
         if (temp instanceof JSONArray){
-            return (new JsonArrayNode((JSONArray) temp)).accept(this, tagLevel);
+            return (new JsonArrayNode((JSONArray) temp)).accept(this, tagLevel, parent);
         }else if (temp instanceof JSONObject){
-            return (new JsonObjectNode((JSONObject)temp)).accept(this,tagLevel);
+            return (new JsonObjectNode((JSONObject)temp)).accept(this,tagLevel, parent);
         }else {
             //return (new PrimaryNode(temp.toString())).accept(this,tagLevel);
             if (temp instanceof  java.lang.Long){
-                return (new LongNode(((Long) temp).intValue())).accept(this,tagLevel);
+                return (new LongNode(((Long) temp).intValue())).accept(this,tagLevel, parent);
             } else if (temp instanceof  java.lang.Double){
-                return (new DoubleNode(((Double) temp).doubleValue())).accept(this,tagLevel);
+                return (new DoubleNode(((Double) temp).doubleValue())).accept(this,tagLevel,parent);
             } else if (temp instanceof  java.lang.Boolean){
-                return (new BooleanNode(((Boolean) temp).booleanValue())).accept(this,tagLevel);
+                return (new BooleanNode(((Boolean) temp).booleanValue())).accept(this,tagLevel,parent);
             } else {
-                return (new StringNode(temp.toString())).accept(this,tagLevel);
+                return (new StringNode(temp.toString())).accept(this,tagLevel,parent);
             }
         }
     }
 
     @Override
-    public String visit(PrimaryNode primaryNode, int tagLevel) {
+    public String visit(PrimaryNode primaryNode, int tagLevel, String parent) {
         String tags = repeat("\t",tagLevel);
         String value="";
         String type ="String";
@@ -129,7 +129,7 @@ public class PrintVistor implements Visitor {
         builder.append(tags+"{\n");
         builder.append(tags+"\t\"type\": \""+type+"\",\n");
         builder.append(tags+"\t\"tags\": [\n");
-        builder.append(tags+"\t\t\""+value+"\"\n");
+        builder.append(tags+"\t\t\""+parent+"\"\n"); // value
         builder.append(tags+"\t]\n");
         builder.append(tags+"}");
 
