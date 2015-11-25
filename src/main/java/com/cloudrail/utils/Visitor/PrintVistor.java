@@ -19,13 +19,15 @@ public class PrintVistor implements Visitor {
         StringBuilder builder = new StringBuilder("");
         builder.append(tags+"{\n");
         builder.append(tags+"\t\"type\": \"Array\",\n");
-        builder.append(tags+"\t\"items\": [ \n");
+        //builder.append(tags+"\t\"items\": [ \n");      //Todo: child = 1 => no "[]"
+        builder.append(tags+"\t\"items\": \n");      //Todo: child = 1 => no "[]"
         for (Object element : jsonArray) {
             builder.append(travel(element,tagLevel+2)+",");
             builder.append("\n");
+            break;
         }
-        builder.deleteCharAt(builder.length()-2);
-        builder.append(tags+"\t]\n");
+        //builder.deleteCharAt(builder.length()-2);
+        //builder.append(tags+"\t]\n");
         builder.append(tags+"}");
 
         return  builder.toString();
