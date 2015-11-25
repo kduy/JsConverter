@@ -119,7 +119,7 @@ public class PrintVistor implements Visitor {
             type = "boolean";
         }else {
             value = ((StringNode)primaryNode).getValue();
-            type="String";
+            type="string";
         }
 
         StringBuilder builder = new StringBuilder("");
