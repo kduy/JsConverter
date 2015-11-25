@@ -110,16 +110,16 @@ public class PrintVistor implements Visitor {
 
         if (primaryNode instanceof LongNode){
             value = ""+((LongNode) primaryNode).getValue();
-            type = "int";
+            type = "Integer";
         }else if (primaryNode instanceof DoubleNode){
             value = ""+((DoubleNode) primaryNode).getValue();
-            type = "number";
+            type = "Number";
         }else if (primaryNode instanceof BooleanNode){
             value = ""+((BooleanNode) primaryNode).getValue();
-            type = "boolean";
+            type = "Boolean";
         }else {
             value = ((StringNode)primaryNode).getValue();
-            type="string";
+            type="String";
         }
 
         StringBuilder builder = new StringBuilder("");
