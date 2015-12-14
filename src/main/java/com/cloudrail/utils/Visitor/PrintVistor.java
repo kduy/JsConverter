@@ -129,11 +129,19 @@ public class PrintVistor implements Visitor {
         builder.append(tags+"{\n");
         builder.append(tags+"\t\"type\": \""+type+"\",\n");
         builder.append(tags+"\t\"tags\": [\n");
-        builder.append(tags+"\t\t\""+parent+"\"\n"); // value
+        builder.append(tags+"\t\t\""+reformat(parent)+"\"\n");
         builder.append(tags+"\t]\n");
         builder.append(tags+"}");
 
         return  builder.toString();
+    }
+
+    private String reformat(String parent) {
+        String result = "" ;
+        for (String s : parent.split("_")){
+            result+= s.isEmpty() ? "" : (String.valueOf(s.charAt(0)).toUpperCase() + s.substring(1));
+        }
+        return result;
     }
 
     private static String repeat(String str, int times) {
