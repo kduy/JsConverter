@@ -1,12 +1,11 @@
 main/java/com/cloudrail/utils/Visitor/Visitor.class
 main/java/com/cloudrail/utils/Node/Visitable.class
+main/java/com/cloudrail/utils/Node/BooleanNode.class
 main/java/com/cloudrail/utils/Node/DoubleNode.class
-JsConverterTest.class
 main/java/com/cloudrail/utils/Node/JsonArrayNode.class
 main/java/JsonConverter.class
 main/java/com/cloudrail/utils/Node/LongNode.class
 main/java/com/cloudrail/utils/Node/StringNode.class
 main/java/com/cloudrail/utils/Visitor/PrintVistor.class
-main/java/com/cloudrail/utils/Node/BooleanNode.class
 main/java/com/cloudrail/utils/Node/JsonObjectNode.class
 main/java/com/cloudrail/utils/Node/PrimaryNode.class

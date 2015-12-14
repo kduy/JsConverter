@@ -12,10 +12,11 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 public class JsonConverter {
+    public static String PropFilePath = "main/resources/config.properties";
     public static void main(String[] args) {
 
-        if (args.length < 2){
-            System.err.println("java -jar <jar path> <input> <output>");
+        if (args.length < 3){
+            System.err.println("java -jar <jar path> <input> <output> <PropertyFilePath>");
             System.exit(1);
         }
 
@@ -24,6 +25,7 @@ public class JsonConverter {
         try {
             BufferedReader br = new BufferedReader(new FileReader(args[0]));
             BufferedWriter bw = new BufferedWriter(new FileWriter(args[1]));
+            PropFilePath = new File(args[2].trim()).getAbsolutePath();
 
             String line ;
 

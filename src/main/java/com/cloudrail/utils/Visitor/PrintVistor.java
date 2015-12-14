@@ -1,11 +1,17 @@
 package main.java.com.cloudrail.utils.Visitor;
 
+import main.java.JsonConverter;
 import main.java.com.cloudrail.utils.Node.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Iterator;
 import java.util.Map.Entry;
+import java.util.Properties;
 
 /**
  * Created by kidio on 17/11/15.
@@ -19,7 +25,7 @@ public class PrintVistor implements Visitor {
         StringBuilder builder = new StringBuilder("");
         builder.append(tags+"{\n");
         builder.append(tags+"\t\"type\": \"Array\",\n");
-        //builder.append(tags+"\t\"items\": [ \n");      //Todo: child = 1 => no "[]"
+
         builder.append(tags+"\t\"items\":");
         for (Object element : jsonArray) {
             //builder.append(travel(element,tagLevel+2)+",");
@@ -47,9 +53,18 @@ public class PrintVistor implements Visitor {
         builder.append(tags+"\t\"type\": \"Object\",\n");
 
         // required
-        builder.append(tags+"\t\"required\": [\n");
-        while (iterator.hasNext()){
-            builder.append(tags+"\t\t\""+iterator.next().getKey()+"\",\n");
+        builder.append(tags+"\t\"required\":[ \n");
+
+        Boolean haveRequiredFields = true;
+        try {
+            haveRequiredFields = readPropertyFile(JsonConverter.PropFilePath);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (haveRequiredFields){
+            while (iterator.hasNext()){
+                builder.append(tags+"\t\t\""+iterator.next().getKey()+"\",\n");
+            }
         }
         builder.deleteCharAt(builder.length()-2);
         builder.append(tags+"\t],\n");
@@ -84,6 +99,17 @@ public class PrintVistor implements Visitor {
 
         return  builder.toString();
 
+    }
+
+    private Boolean readPropertyFile(String fileName) throws IOException {
+        Properties prop = new Properties();
+        InputStream inputStream = new FileInputStream(fileName);
+        if(inputStream != null ){
+            prop.load(inputStream);
+        } else {
+            throw new FileNotFoundException(fileName + " not found");
+        }
+        return Boolean.parseBoolean(prop.getProperty("required"));
     }
 
     private String travel(Object temp, int tagLevel, String parent) {
