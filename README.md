@@ -10,5 +10,10 @@ mvn package
 Run
 
 ```bash
-java -jar target/JsonConverter-1.0-SNAPSHOT-jar-with-dependencies.jar <input file> <output file>
+java -jar <jar path> <input> <output> <PropertyFilePath>
+```
+
+Example
+```bash
+java -jar target/JsonConverter-1.0-SNAPSHOT-jar-with-dependencies.jar input.md output.md ./config.properties
 ```
