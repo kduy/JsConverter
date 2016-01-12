@@ -26,10 +26,17 @@ public class PrintVistor implements Visitor {
         builder.append(tags+"{\n");
         builder.append(tags+"\t\"type\": \"Array\",\n");
 
+        builder.append(tags+"\t\"tags\": [\n");
+        builder.append(tags+"\t\t\""+reformat(parent)+"\", \"List\"\n");
+        builder.append(tags+"\t],\n");
+
         builder.append(tags+"\t\"items\":");
         for (Object element : jsonArray) {
-            //builder.append(travel(element,tagLevel+2)+",");
-            builder.append(travel(element,tagLevel+1,""));
+
+            if (!(element instanceof  JSONArray || element instanceof JSONObject) )
+                builder.append(travel(element,tagLevel+1,parent));
+            else
+                builder.append(travel(element,tagLevel+1,""));
             builder.append("\n");
             break;
         }
@@ -38,6 +45,18 @@ public class PrintVistor implements Visitor {
         builder.append(tags+"}");
 
         return  builder.toString();
+
+
+
+        /*
+        StringBuilder builder = new StringBuilder("");
+        builder.append(tags+"{\n");
+        builder.append(tags+"\t\"type\": \""+type+"\",\n");
+        builder.append(tags+"\t\"tags\": [\n");
+        builder.append(tags+"\t\t\""+reformat(parent)+"\"\n");
+        builder.append(tags+"\t]\n");
+        builder.append(tags+"}");
+        */
     }
 
     @Override
@@ -164,7 +183,7 @@ public class PrintVistor implements Visitor {
 
     private String reformat(String parent) {
         String result = "" ;
-        for (String s : parent.split("_")){
+        for (String s : parent.split("[_||-]")){
             result+= s.isEmpty() ? "" : (String.valueOf(s.charAt(0)).toUpperCase() + s.substring(1));
         }
         return result;
